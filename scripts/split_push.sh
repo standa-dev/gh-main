@@ -3,6 +3,7 @@ set -euo pipefail
 
 CHECKPOINTS="subtree-checkpoints"
 DEST_URL="https://x-access-token:${GH_TOKEN}@github.com/standa-dev/${REMOTE}.git"
+MAIN_URL="https://x-access-token:${GH_TOKEN}@github.com/standa-dev/gh-main.git"
 
 git config user.name "CI"
 git config user.email "ci@nimbus.co"
@@ -33,4 +34,4 @@ else
 fi
 
 git push "$DEST_URL" "$split:$DEST_BRANCH"
-git push origin "$SUBTREE"
+git push "$MAIN_URL" "$CHECKPOINTS"
