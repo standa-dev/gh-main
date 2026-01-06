@@ -9,7 +9,7 @@ git checkout -B subtree-checkpoints origin/subtree-checkpoints 2>/dev/null \
   || git checkout -B subtree-checkpoints origin/main
 
 # 2) Bring in latest main (must be clean fast-forward)
-git merge --ff-only origin/main
+git merge --no-edit origin/main
 
 # 3) Split + rejoin (this creates commits, but only on subtree-checkpoints)
 splitResult=$(git subtree split -P extensions/LiveRamp --squash --rejoin)
