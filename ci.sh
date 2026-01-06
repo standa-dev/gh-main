@@ -14,7 +14,7 @@ git merge --ff-only origin/main
 # 3) Split + rejoin (this creates commits, but only on subtree-checkpoints)
 splitResult=$(git subtree split -P extensions/LiveRamp --squash --rejoin)
 
-if [ ! -z "$splitResult" ] then
+if [ ! -z "$splitResult" ]; then
     # 4) Push to the dedicated remote for that subtree
     git push gh-liveramp "$split_sha:main"
 
