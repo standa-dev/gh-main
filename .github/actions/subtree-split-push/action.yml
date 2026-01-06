@@ -10,14 +10,17 @@ inputs:
   target-branch:
     description: "The branch of the remote to push to."
     required: true
+  token:
+    description: "Token to push subtrees"
+    required: true
 runs:
   using: "composite"
   steps:
   - name: Split and Push ${{ inputs.subtree }}
     shell: bash
     env:
-      GH_TOKEN: ${{ secrets.NIMBUS_PAT }}
+      GH_TOKEN: ${{ inputs.token }}
       REMOTE: ${{ inputs.remote }}
       SUBTREE: ${{ inputs.subtree }}
       DEST_BRANCH: ${{ inputs.target-branch }}
-    run: scripts/split_push.sh
+    run: bash scripts/split_push.sh

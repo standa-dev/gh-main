@@ -20,3 +20,4 @@ jobs:
           subtree: extensions/LiveRamp
           remote: gh-liveramp
           target-branch: main
+          token: ${{ secrets.NIMBUS_PAT }}
