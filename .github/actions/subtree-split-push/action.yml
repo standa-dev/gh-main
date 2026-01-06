@@ -1,0 +1,23 @@
+name: "Subtree Split and Push"
+description: Attempts to split and rejoin the given subtree into the working history, if changes were found also pushes the changes to the subtree repo.
+inputs:
+  subtree:
+    description: "The prefix for the subtree being operated on."
+    required: true
+  remote:
+    description: "The remote repository for the subtree to push to."
+    required: true
+  target-branch:
+    description: "The branch of the remote to push to."
+    required: true
+runs:
+  using: "composite"
+  steps:
+  - name: Split and Push ${{ inputs.subtree }}
+    shell: bash
+    env:
+      GH_TOKEN: ${{ secrets.NIMBUS_PAT }}
+      REMOTE: ${{ inputs.remote }}
+      SUBTREE: ${{ inputs.subtree }}
+      DEST_BRANCH: ${{ inputs.target-branch }}
+    run: scripts/split_push.sh

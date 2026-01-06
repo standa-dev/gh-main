@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PREFIX="extensions/LiveRamp"
 CHECKPOINTS="subtree-checkpoints"
-DEST_URL="https://x-access-token:${GH_TOKEN}@github.com/standa-dev/gh-liveramp.git"
-DEST_BRANCH="main"
+DEST_URL="https://x-access-token:${GH_TOKEN}@github.com/standa-dev/${REMOTE}.git"
 
 git config user.name "CI"
 git config user.email "ci@nimbus.co"
@@ -21,12 +19,12 @@ git merge --no-edit origin/main
 new=$(git rev-parse HEAD)
 
 # only do subtree work if prefix changed in the newly-merged range
-if git diff --quiet "$old..$new" -- "$PREFIX/"; then
-  echo "No changes in $PREFIX"
+if git diff --quiet "$old..$new" -- "$SUBTREE/"; then
+  echo "No changes in $SUBTREE"
   git push origin "$CHECKPOINTS" || true
   exit 0
 fi
 
-split=$(git subtree split -P "$PREFIX" --squash --rejoin)
+split=$(git subtree split -P "$SUBTREE" --squash --rejoin)
 git push "$DEST_URL" "$split:$DEST_BRANCH"
-git push origin "$CHECKPOINTS"
+git push origin "$SUBTREE"
