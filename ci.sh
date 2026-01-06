@@ -16,7 +16,7 @@ splitResult=$(git subtree split -P extensions/LiveRamp --squash --rejoin)
 
 if [ ! -z "$splitResult" ]; then
     # 4) Push to the dedicated remote for that subtree
-    git push gh-liveramp "$split_sha:main"
+    git push gh-liveramp "$splitResult:main"
 
     # 5) Persist checkpoints updates
     git push origin subtree-checkpoints
