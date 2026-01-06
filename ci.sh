@@ -20,4 +20,6 @@ if [ ! -z "$splitResult" ] then
 
     # 5) Persist checkpoints updates
     git push origin subtree-checkpoints
+else
+    echo "No changes in LiveRamp detected"
 fi
