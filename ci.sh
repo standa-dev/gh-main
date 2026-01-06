@@ -1,25 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-set -eo pipefail
+PREFIX="extensions/LiveRamp"
+CHECKPOINTS="subtree-checkpoints"
+DEST_URL="https://x-access-token:${GH_TOKEN}@github.com/standa-dev/gh-liveramp.git"
+DEST_BRANCH="main"
+
+git config user.name "CI"
+git config user.email "ci@nimbus.co"
 
 git fetch origin
 
-# 1) Start from checkpoints branch (create it if it doesn't exist)
-git checkout -B subtree-checkpoints origin/subtree-checkpoints 2>/dev/null \
-  || git checkout -B subtree-checkpoints origin/main
+# checkout checkpoints (or create from main)
+git checkout -B "$CHECKPOINTS" "origin/$CHECKPOINTS" 2>/dev/null \
+  || git checkout -B "$CHECKPOINTS" origin/main
 
-# 2) Bring in latest main (must be clean fast-forward)
+# merge latest main (checkpoints diverges by design)
+old=$(git rev-parse HEAD)
 git merge --no-edit origin/main
+new=$(git rev-parse HEAD)
 
-# 3) Split + rejoin (this creates commits, but only on subtree-checkpoints)
-splitResult=$(git subtree split -P extensions/LiveRamp --squash --rejoin)
-
-if [ ! -z "$splitResult" ]; then
-    # 4) Push to the dedicated remote for that subtree
-    git push gh-liveramp "$splitResult:main"
-
-    # 5) Persist checkpoints updates
-    git push origin subtree-checkpoints
-else
-    echo "No changes in LiveRamp detected"
+# only do subtree work if prefix changed in the newly-merged range
+if git diff --quiet "$old..$new" -- "$PREFIX/"; then
+  echo "No changes in $PREFIX"
+  git push origin "$CHECKPOINTS" || true
+  exit 0
 fi
+
+split=$(git subtree split -P "$PREFIX" --squash --rejoin)
+git push "$DEST_URL" "$split:$DEST_BRANCH"
+git push origin "$CHECKPOINTS"
