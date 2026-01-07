@@ -22,7 +22,7 @@ new=$(git rev-parse HEAD)
 # only do subtree work if prefix changed in the newly-merged range
 if git diff --quiet "$old..$new" -- "$SUBTREE/"; then
   echo "No changes in $SUBTREE"
-  git push origin "$CHECKPOINTS" || true
+  git push "$MAIN_URL" "$CHECKPOINTS" || true
   exit 0
 fi
 
