@@ -26,12 +26,11 @@ if git diff --quiet "$old..$new" -- "$SUBTREE/"; then
   exit 0
 fi
 
-if split=$(git subtree split -P "$SUBTREE" --squash --rejoin 2>/dev/null); then
+if split=$(git subtree split -P "$SUBTREE" --squash --rejoin HEAD "$DEST_URL" 2>/dev/null); then
   echo "subtree: used --rejoin checkpoints"
-else
-  echo "subtree: --rejoin failed, falling back to --ignore-joins"
-  split=$(git subtree split -P "$SUBTREE" --squash --rejoin --ignore-joins)
-fi
 
-git push "$DEST_URL" "$split:$DEST_BRANCH"
-git push "$MAIN_URL" "$CHECKPOINTS"
+  git push "$DEST_URL" "$split:$DEST_BRANCH"
+  git push "$MAIN_URL" "$CHECKPOINTS"
+else
+  echo "subtree: split failed OR no new revisions for $SUBTREE"
+fi
