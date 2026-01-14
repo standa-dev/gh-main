@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout SDK
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       
       - name: Sync LiveRamp
         uses: ./.github/actions/sync-extension
