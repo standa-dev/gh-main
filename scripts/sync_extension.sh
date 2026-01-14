@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Trailing slashes mean contents of that folder
+# Trailing slashes mean contents of that folder. 
+# 'P .git/' protects .git/ from modifications as the main repo doesn't have it.
 rsync -a --delete --filter='P .git/' "$SYNC_SRC_DIR/" "./"
 
 # Commit & push if needed
@@ -18,5 +19,5 @@ if [[ -n "$(git status --porcelain)" ]]; then
   git push origin HEAD
   echo "✅ Sync complete."
 else
-  echo "No changes to sync. ✅"
+  echo "✅ No changes to sync."
 fi

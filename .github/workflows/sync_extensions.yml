@@ -1,18 +1,18 @@
 name: Sync Extensions on PR merge
 
-# on:
-#   pull_request:
-#     types: [closed]
-#     branches: [main]
-
 on:
-  push:
-    branches:
-        - main
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+# on:
+#   push:
+#     branches:
+#         - main
 
 jobs:
   sync_extensions:
-    # if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout SDK
