@@ -1,26 +1,26 @@
-name: "PR Subtree Push"
+# name: "PR Subtree Push"
 
-permissions:
-  contents: write
+# permissions:
+#   contents: write
 
-on:
-  push:
-    branches:
-        - main
-jobs:
-  sync-subtrees:
-    runs-on: macos-26
-    steps:
-      - name: Checkout the Repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          persist-credentials: false
+# on:
+#   push:
+#     branches:
+#         - main
+# jobs:
+#   sync-subtrees:
+#     runs-on: macos-26
+#     steps:
+#       - name: Checkout the Repository
+#         uses: actions/checkout@v6
+#         with:
+#           fetch-depth: 0
+#           persist-credentials: false
       
-      - name: Subtree - LiveRamp
-        uses: ./.github/actions/subtree-split-push
-        with:
-          subtree: extensions/LiveRamp
-          remote: gh-liveramp
-          target-branch: main
-          token: ${{ secrets.NIMBUS_PAT }}
+#       - name: Subtree - LiveRamp
+#         uses: ./.github/actions/subtree-split-push
+#         with:
+#           subtree: extensions/LiveRamp
+#           remote: gh-liveramp
+#           target-branch: main
+#           token: ${{ secrets.NIMBUS_PAT }}
