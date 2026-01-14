@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Trailing slashes mean contents of that folder. 
 # 'P .git/' protects .git/ from modifications as the main repo doesn't have it.
-rsync -a --delete --filter='P .git/' "$SYNC_SRC_DIR/" "./"
+rsync -a --delete --filter='P .git/' "${SYNC_SRC_DIR}/" "./"
 
 # Commit & push if needed
 if [[ -n "$(git status --porcelain)" ]]; then
@@ -13,7 +13,7 @@ if [[ -n "$(git status --porcelain)" ]]; then
   git config user.name "Nimbus Deploy"
 
   git add --all
-  git commit -m "Update extension"
+  git commit -m "${SYNC_COMMIT}"
 
   echo "Pushing to extension repository..."
   git push origin HEAD

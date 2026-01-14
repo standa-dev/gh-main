@@ -29,5 +29,6 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
         SYNC_REPOSITORY: ${{ inputs.repository }}
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.extension-path }}"
+        SYNC_COMMIT: ${{ github.event.pull_request.title }}
       run: bash ${{ github.workspace }}/scripts/sync_extension.sh
       working-directory: _extensions/${{ inputs.name }}
