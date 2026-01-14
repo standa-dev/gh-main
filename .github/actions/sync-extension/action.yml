@@ -21,6 +21,7 @@ runs:
       with:
         path: _extensions/${{ inputs.name }}
         persist-credentials: false
+        fetch-depth: 0
 
     - name: Sync ${{ inputs.name }}
       shell: bash
