@@ -19,9 +19,9 @@ runs:
     - name: Checkout Extension {{ inputs.name }}
       uses: actions/checkout@v6
       with:
-        path: ~/_extensions/${{ inputs.name }}
+        repository: ${{ inputs.repository }}
+        path: _extensions/${{ inputs.name }}
         persist-credentials: false
-        fetch-depth: 0
 
     - name: Sync ${{ inputs.name }}
       shell: bash
@@ -30,4 +30,4 @@ runs:
         SYNC_REPOSITORY: ${{ inputs.repository }}
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.extension-path }}"
       run: bash scripts/sync_extension.sh
-      working-directory: ~/_extensions/${{ inputs.name }}
+      working-directory: _extensions/${{ inputs.name }}
