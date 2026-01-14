@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Trailing slashes mean contents of that folder
-rsync -a "$SYNC_SRC_DIR/" "./"
+rsync -a --delete --filter='P .git/' "$SYNC_SRC_DIR/" "./"
 
 # Commit & push if needed
 if [[ -n "$(git status --porcelain)" ]]; then
