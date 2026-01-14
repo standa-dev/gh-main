@@ -1,0 +1,31 @@
+name: "Sync an extension"
+description: Synchronizes an extension repository based on the main repo
+inputs:
+  name:
+    description: "Extension name"
+    required: true
+  extension-path:
+    description: "Path to the extension"
+    required: true
+  repository:
+    description: "The remote repository for the subtree to push to."
+    required: true
+  token:
+    description: "Token to push"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Extension {{ inputs.name }}
+      uses: actions/checkout@v6
+      with:
+        path: _extensions/${{ inputs.name }}
+
+    - name: Sync ${{ inputs.name }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        SYNC_REPOSITORY: ${{ inputs.repository }}
+        SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.extension-path }}"
+      run: bash scripts/sync_extension.sh
+      working-directory: _extensions/${{ inputs.name }}
