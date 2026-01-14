@@ -1,20 +1,25 @@
 name: Sync Extensions on PR merge
 
+# on:
+#   pull_request:
+#     types: [closed]
+#     branches: [main]
+
 on:
-  pull_request:
-    types: [closed]
-    branches: [main]
+  push:
+    branches:
+        - main
 
 jobs:
   sync_extensions:
-    if: ${{ github.event.pull_request.merged == true }}
+    # if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout SDK
         uses: actions/checkout@v4
       
       - name: Sync LiveRamp
-        uses: ./.github/actions/sync-extensions
+        uses: ./.github/actions/sync-extension
         with:
           name: LiveRamp
           extension-path: Extensions/Sources/LiveRamp
