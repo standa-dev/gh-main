@@ -6,15 +6,23 @@ name: Sync Extensions on PR merge
 #     branches: [main]
 
 on:
-  push:
-    branches:
-        - main
+  workflow_call:
+    inputs:
+      commit-message:
+        type: string
+        required: true
+        description: "Commit message to sync extensions"
+
+# on:
+#   push:
+#     branches:
+#         - main
 
 jobs:
   sync_extensions:
     # if: ${{ github.event.pull_request.merged == true }}
-    # env:
-      # SYNC_COMMIT: "updated extension" #${{ github.event.pull_request.title }}
+    env:
+      SYNC_COMMIT: ${{ inputs.commit-message }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout SDK
