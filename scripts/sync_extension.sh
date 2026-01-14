@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# AUTH_URL="https://x-access-token:${GH_TOKEN}@github.com/${SYNC_REPOSITORY}.git"
-
 # Trailing slashes mean contents of that folder
 rsync -a "$SYNC_SRC_DIR/" "./"
 
