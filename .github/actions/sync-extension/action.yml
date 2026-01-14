@@ -30,5 +30,5 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
         SYNC_REPOSITORY: ${{ inputs.repository }}
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.extension-path }}"
-      run: bash scripts/sync_extension.sh
+      run: bash ${{ github.workspace }}/scripts/sync_extension.sh
       working-directory: _extensions/${{ inputs.name }}
