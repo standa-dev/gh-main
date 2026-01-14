@@ -1,9 +1,4 @@
-name: Sync Extensions on PR merge
-
-# on:
-#   pull_request:
-#     types: [closed]
-#     branches: [main]
+name: Sync Extensions
 
 on:
   workflow_call:
@@ -12,37 +7,27 @@ on:
         type: string
         required: true
         description: "Commit message to sync extensions"
-
-# on:
-#   push:
-#     branches:
-#         - main
+      production:
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   sync_extensions:
-    # if: ${{ github.event.pull_request.merged == true }}
+    runs-on: ubuntu-latest
     env:
       SYNC_COMMIT: ${{ inputs.commit-message }}
-    runs-on: ubuntu-latest
+      SYNC_REPO_PREFIX: ${{ inputs.production && 'standa-dev/' || 'standa-dev/internal-' }}
     steps:
       - name: Checkout SDK
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
       
-      # - name: Sync LiveRamp
-      #   uses: ./.github/actions/sync-extension
-      #   with:
-      #     key: liveramp
-      #     path: Extensions/Sources/LiveRamp
-      #     repository: standa-dev/gh-liveramp
-      #     token: ${{ secrets.NIMBUS_PAT }}
-
-      - name: Sync AdMob
+      - name: Sync NimbusAdMobKit
         uses: ./.github/actions/sync-extension
         with:
           key: admob
           path: Extensions/Sources/NimbusAdMobKit
-          repository: standa-dev/gh-admob
           token: ${{ secrets.NIMBUS_PAT }}
-          
+
