@@ -16,6 +16,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Validate required env variables
+      shell: bash
+      run: |
+          set -euo pipefail
+          : "${SYNC_COMMIT:?SYNC_COMMIT missing (set SYNC_COMMIT)}"
+
     - name: Validate key matches path & repo
       shell: bash
       run: |
@@ -52,9 +58,7 @@ runs:
     - name: Sync Extension ${{ inputs.key }}
       shell: bash
       env:
-        GH_TOKEN: ${{ inputs.token }}
         SYNC_REPOSITORY: ${{ inputs.repository }}
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.path }}"
-        SYNC_COMMIT: "simple update" #${{ github.event.pull_request.title }}
       run: bash ${{ github.workspace }}/scripts/sync_extension.sh
       working-directory: _extensions/${{ inputs.key }}

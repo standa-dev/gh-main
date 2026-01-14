@@ -13,6 +13,8 @@ on:
 jobs:
   sync_extensions:
     # if: ${{ github.event.pull_request.merged == true }}
+    env:
+      SYNC_COMMIT: "updated extension" #${{ github.event.pull_request.title }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout SDK
@@ -33,6 +35,6 @@ jobs:
         with:
           key: admob
           path: Extensions/Sources/NimbusAdMobKit
-          repository: standa-dev/gh-liveramp
+          repository: standa-dev/gh-admob
           token: ${{ secrets.NIMBUS_PAT }}
           
