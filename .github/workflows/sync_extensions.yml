@@ -20,19 +20,19 @@ jobs:
         with:
           persist-credentials: false
       
-      - name: Sync LiveRamp
-        uses: ./.github/actions/sync-extension
-        with:
-          key: liveramp
-          path: Extensions/Sources/LiveRamp
-          repository: standa-dev/gh-liveramp
-          token: ${{ secrets.NIMBUS_PAT }}
+      # - name: Sync LiveRamp
+      #   uses: ./.github/actions/sync-extension
+      #   with:
+      #     key: liveramp
+      #     path: Extensions/Sources/LiveRamp
+      #     repository: standa-dev/gh-liveramp
+      #     token: ${{ secrets.NIMBUS_PAT }}
 
       - name: Sync AdMob
         uses: ./.github/actions/sync-extension
         with:
           key: admob
-          path: Extensions/Sources/NimbusAdMobKit
+          path: Extensions/Sources/LiveRamp
           repository: standa-dev/gh-admob
           token: ${{ secrets.NIMBUS_PAT }}
           
