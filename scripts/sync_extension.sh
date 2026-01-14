@@ -17,7 +17,7 @@ if [[ -n "$(git status --porcelain)" ]]; then
   git commit -m "Update extension"
 
   echo "Pushing to extension repository..."
-  git push "$AUTH_URL" HEAD
+  git push "$AUTH_URL" main
   echo "✅ Sync complete."
 else
   echo "No changes to sync. ✅"
