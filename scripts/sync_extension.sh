@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-AUTH_URL="https://x-access-token:${GH_TOKEN}@github.com/${SYNC_REPOSITORY}.git"
+# AUTH_URL="https://x-access-token:${GH_TOKEN}@github.com/${SYNC_REPOSITORY}.git"
 
 # Trailing slashes mean contents of that folder
 rsync -a "$SYNC_SRC_DIR/" "./"
@@ -17,7 +17,7 @@ if [[ -n "$(git status --porcelain)" ]]; then
   git commit -m "Update extension"
 
   echo "Pushing to extension repository..."
-  git push "$AUTH_URL" HEAD
+  git push origin HEAD
   echo "✅ Sync complete."
 else
   echo "No changes to sync. ✅"

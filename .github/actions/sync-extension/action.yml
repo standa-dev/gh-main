@@ -21,7 +21,8 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         path: _extensions/${{ inputs.name }}
-        persist-credentials: false
+        token: ${{ inputs.token }}
+        # persist-credentials: false
 
     - name: Sync ${{ inputs.name }}
       shell: bash
