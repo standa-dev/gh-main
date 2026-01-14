@@ -13,3 +13,4 @@ jobs:
     secrets: inherit
     with:
       commit-message: ${{ github.event.pull_request.title }}
+      production: true

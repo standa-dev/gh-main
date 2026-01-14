@@ -1,14 +1,11 @@
-name: "Sync an extension"
-description: Synchronizes an extension repository based on the main repo
+name: "Sync Extension"
+description: Synchronizes extension repository based on the main repo
 inputs:
   key:
-    description: "Short identifier that must match both path and repository (e.g. admob, unity, liveramp)"
+    description: "Short identifier that must be contained in the path (e.g. admob, unity, liveramp)"
     required: true
   path:
     description: "Path to the extension"
-    required: true
-  repository:
-    description: "The extension repository to sync to"
     required: true
   token:
     description: "Token to clone and push the extension"
@@ -21,15 +18,15 @@ runs:
       run: |
           set -euo pipefail
           : "${SYNC_COMMIT:?SYNC_COMMIT missing (set SYNC_COMMIT)}"
+          : "${SYNC_REPO_PREFIX:?SYNC_REPO_PREFIX missing (set SYNC_REPO_PREFIX)}"
 
-    - name: Validate key matches path & repo
+    - name: Validate key matches path
       shell: bash
       run: |
         set -euo pipefail
 
         key='${{ inputs.key }}'
         path='${{ inputs.path }}'
-        repo='${{ inputs.repository }}'
 
         if [[ -z "$key" ]]; then
           echo "::error::inputs.key is empty"
@@ -43,22 +40,17 @@ runs:
           exit 1
         fi
 
-        if [[ "$repo" != *"$key"* ]]; then
-          echo "::error::Key '$key' not found in repository '$repo' (case-insensitive). Refusing to sync."
-          exit 1
-        fi
-
     - name: Checkout Extension {{ inputs.key }}
       uses: actions/checkout@v6
       with:
-        repository: ${{ inputs.repository }}
+        repository: "${{ env.SYNC_REPO_PREFIX }}${{ inputs.key }}"
         path: _extensions/${{ inputs.key }}
         token: ${{ inputs.token }}
 
     - name: Sync Extension ${{ inputs.key }}
       shell: bash
       env:
-        SYNC_REPOSITORY: ${{ inputs.repository }}
+        SYNC_REPOSITORY: "${{ env.SYNC_REPO_PREFIX }}${{ inputs.key }}"
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.path }}"
       run: bash ${{ github.workspace }}/scripts/sync_extension.sh
       working-directory: _extensions/${{ inputs.key }}
