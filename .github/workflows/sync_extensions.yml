@@ -27,4 +27,12 @@ jobs:
           extension-path: Extensions/Sources/LiveRamp
           repository: standa-dev/gh-liveramp
           token: ${{ secrets.NIMBUS_PAT }}
+
+      - name: Sync AdMob
+        uses: ./.github/actions/sync-extension
+        with:
+          name: AdMob
+          extension-path: Extensions/Sources/NimbusAdMobKit
+          repository: standa-dev/gh-admob
+          token: ${{ secrets.NIMBUS_PAT }}
           
