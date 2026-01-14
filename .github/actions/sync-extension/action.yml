@@ -42,14 +42,14 @@ runs:
           exit 1
         fi
 
-    - name: Checkout Extension {{ inputs.name }}
+    - name: Checkout Extension {{ inputs.key }}
       uses: actions/checkout@v6
       with:
         repository: ${{ inputs.repository }}
-        path: _extensions/${{ inputs.name }}
+        path: _extensions/${{ inputs.key }}
         token: ${{ inputs.token }}
 
-    - name: Sync ${{ inputs.name }}
+    - name: Sync Extension ${{ inputs.key }}
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
@@ -57,4 +57,4 @@ runs:
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.extension-path }}"
         SYNC_COMMIT: "simple update" #${{ github.event.pull_request.title }}
       run: bash ${{ github.workspace }}/scripts/sync_extension.sh
-      working-directory: _extensions/${{ inputs.name }}
+      working-directory: _extensions/${{ inputs.key }}
