@@ -1,0 +1,15 @@
+name: Sync Extensions on PR merge in main
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  sync_extensions:
+    name: Sync Extensions
+    if: ${{ github.event.pull_request.merged == true }}
+    uses: ./.github/workflows/sync_extensions.yml
+    secrets: inherit
+    with:
+      commit-message: ${{ github.event.pull_request.title }}
