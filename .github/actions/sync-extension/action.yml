@@ -1,21 +1,47 @@
 name: "Sync an extension"
 description: Synchronizes an extension repository based on the main repo
 inputs:
-  name:
-    description: "Extension name"
+  key:
+    description: "Short identifier that must match both path and repository (e.g. admob, unity, liveramp)"
     required: true
-  extension-path:
+  path:
     description: "Path to the extension"
     required: true
   repository:
-    description: "The remote repository for the subtree to push to."
+    description: "The extension repository to sync to"
     required: true
   token:
-    description: "Token to push"
+    description: "Token to clone and push the extension"
     required: true
 runs:
   using: "composite"
   steps:
+    - name: Validate key matches path & repo
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        key='${{ inputs.key }}'
+        path='${{ inputs.path }}'
+        repo='${{ inputs.repository }}'
+
+        if [[ -z "$key" ]]; then
+          echo "::error::inputs.key is empty"
+          exit 1
+        fi
+
+        shopt -s nocasematch
+
+        if [[ "$path" != *"$key"* ]]; then
+          echo "::error::Key '$key' not found in path '$path' (case-insensitive). Refusing to sync."
+          exit 1
+        fi
+
+        if [[ "$repo" != *"$key"* ]]; then
+          echo "::error::Key '$key' not found in repository '$repo' (case-insensitive). Refusing to sync."
+          exit 1
+        fi
+
     - name: Checkout Extension {{ inputs.name }}
       uses: actions/checkout@v6
       with:
@@ -29,6 +55,6 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
         SYNC_REPOSITORY: ${{ inputs.repository }}
         SYNC_SRC_DIR: "${{ github.workspace }}/${{ inputs.extension-path }}"
-        SYNC_COMMIT: ${{ github.event.pull_request.title }}
+        SYNC_COMMIT: "simple update" #${{ github.event.pull_request.title }}
       run: bash ${{ github.workspace }}/scripts/sync_extension.sh
       working-directory: _extensions/${{ inputs.name }}
